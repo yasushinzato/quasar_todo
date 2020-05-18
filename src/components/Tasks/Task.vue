@@ -28,6 +28,11 @@
         </div>
       </div>
     </q-item-section>
+    <!-- 削除ボタン ボタンはquasar公式の→を参照 https://quasar.dev/vue-components/button#QBtn-API-->
+    <q-item-section side>
+      <!-- .stopで親要素のボタンクリックによるcomplitedを更新しないようにする -->
+      <q-btn @click.stop="promptToDelete(id)" flat round color="red" dense icon="delete" />
+    </q-item-section>
   </q-item>
 
 </template>
@@ -38,7 +43,24 @@ import  { mapActions } from 'vuex'
 export default {
   props: ["task", "id"],
   methods: {
-    ...mapActions('tasks', ['updateTask'])
+    // mapActionsでstore-tasks.jsのActionを呼び出す
+    ...mapActions('tasks', ['updateTask', 'deleteTask']),
+    promptToDelete(id) {
+      // ダイアログは　quasar公式の　https://quasar.dev/quasar-plugins/dialog
+      this.$q.dialog({
+        title: '確認',
+        message: '本当に削除しますか？',
+        ok: {
+          push: true
+        },
+        cancel: {
+          color: 'negative'
+        },
+        persistent: true
+      }).onOk(() => {
+        this.deleteTask(id)
+      })
+    }
   }
 };
 </script>

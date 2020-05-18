@@ -1,3 +1,5 @@
+import Vue from 'vue'
+
 const state = {
   // タスク配列をオブジェクト構造に変更
   tasks: {
@@ -26,15 +28,25 @@ const mutations = {
   updateTask(state, payload) {
     // console.log('payload (from mutation)', payload)
     Object.assign(state.tasks[payload.id], payload.updates)
-
+  },
+  deleteTask(state, id) {
+    // console.log('delete id(mutations):', id)
+    // 画面には表示されないので、組み込みのビューメソッドを使用する. Vueをインポートしておく。
+    // delete state.tasks[id]
+    Vue.delete(state.tasks, id)
   }
 }
 
 const actions = {
+  // mutationsで状態を変更する
   updateTask({ commit }, payload) {
     // console.log('updateTask action')
     // console.log('payload', payload)
     commit('updateTask', payload)
+  },
+  deleteTask({ commit }, id) {
+    // console.log('delete id:', id)
+    commit('deleteTask', id)
   }
 }
 
