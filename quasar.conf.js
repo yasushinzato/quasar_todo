@@ -37,7 +37,7 @@ module.exports = function (/* ctx */) {
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
       iconSet: 'material-icons', // Quasar icon set
-      lang: 'en-us', // Quasar language pack
+      lang: 'ja', // Quasar language pack
 
       // Possible values for "all":
       // * 'auto' - Auto-import needed Quasar components & directives
@@ -54,9 +54,16 @@ module.exports = function (/* ctx */) {
         'QTabs',
         'QTab',
         'QRouteTab',
-        'QDrawer'
+        'QDrawer',
+        // モーダルを追加 https://quasar.dev/vue-components/dialog  
+        'QDialog',
+        'QTime',
+        'QForm'
       ],
-      directives: [],
+      directives: [
+        // モーダルを追加
+        'ClosePopup'
+      ],
 
       // Quasar plugins
       // ダイアログプラグインを追加す

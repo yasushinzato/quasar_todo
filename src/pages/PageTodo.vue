@@ -1,8 +1,19 @@
 <template>
   <q-page class="q-pa-md">
+    <!-- タスク一覧 -->
     <q-list separator bordered>
       <task v-for="(task, key) in tasks" :key="key" :task="task" :id="key"></task>
     </q-list>
+
+    <!-- タスク追加ボタン -->
+    <div class="absolute-bottom text-center q-mb-lg">
+      <q-btn @click="showAddTask = true" round color="primary" size="24px" icon="add" />
+    </div>
+
+    <!-- 追加用モーダル(コンポーネント化) -->
+    <q-dialog v-model="showAddTask">
+      <add-task />
+    </q-dialog>
   </q-page>
 </template>
 
@@ -10,6 +21,12 @@
 import { mapGetters } from "vuex";
 
 export default {
+  data() {
+    return {
+      // 追加モーダルの表示制御
+      showAddTask: false
+    };
+  },
   computed: {
     tasks() {
       return this.$store.getters["tasks/tasks"];
@@ -17,7 +34,8 @@ export default {
   },
   methods: {},
   components: {
-    task: require("components/Tasks/Task.vue").default
+    task: require("components/Tasks/Task.vue").default,
+    "add-task": require("components/Tasks/Modals/AddTask.vue").default
   }
 };
 </script>

@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { uid } from 'quasar'
 
 const state = {
   // タスク配列をオブジェクト構造に変更
@@ -34,6 +35,10 @@ const mutations = {
     // 画面には表示されないので、組み込みのビューメソッドを使用する. Vueをインポートしておく。
     // delete state.tasks[id]
     Vue.delete(state.tasks, id)
+  },
+  // AddTaskコンポーネント側にimportして利用する
+  addTask(state, payload) {
+    Vue.set(state.tasks, payload.id, payload.task)
   }
 }
 
@@ -47,6 +52,16 @@ const actions = {
   deleteTask({ commit }, id) {
     // console.log('delete id:', id)
     commit('deleteTask', id)
+  },
+  // タスクの追加。 タスクのIDは一意のキーに設定する。 https://quasar.dev/quasar-utils/other-utils#Generate-UID
+  addTask({ commit }, task) {
+    let taskId = uid()
+    // console.log('taskId:', taskId)
+    let payload = {
+      id: taskId,
+      task: task
+    }
+    commit('addTask', payload)
   }
 }
 
