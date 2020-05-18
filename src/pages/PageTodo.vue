@@ -38,33 +38,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  data() {
-    return {
-      tasks: [
-        {
-          id: 1,
-          name: "QuasarでTodo作成",
-          completed: false,
-          dueDate: "2020/05/17",
-          dueTime: "18:00"
-        },
-        {
-          id: 2,
-          name: "「あなたはなぜチェックリストを使わないのか？」を読む",
-          completed: false,
-          dueDate: "2020/05/18",
-          dueTime: "13:00"
-        },
-        {
-          id: 3,
-          name: "「時間は存在しない」を読む",
-          completed: true,
-          dueDate: "2020/05/18",
-          dueTime: "15:30"
-        }
-      ]
-    };
+  computed: {
+    tasks() {
+      return this.$store.getters['tasks/tasks']
+    }
   },
   methods: {},
   components: {}
