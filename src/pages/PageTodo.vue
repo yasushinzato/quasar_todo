@@ -1,7 +1,7 @@
 <template>
   <q-page class="q-pa-md">
-    <!-- タスク一覧 -->
-    <q-list separator bordered>
+    <!-- タスク一覧 タスクがないときバーが表示されるので、非表示にする-->
+    <q-list v-if="Object.keys(tasks).length" separator bordered>
       <task v-for="(task, key) in tasks" :key="key" :task="task" :id="key"></task>
     </q-list>
 
@@ -12,7 +12,7 @@
 
     <!-- 追加用モーダル(コンポーネント化) -->
     <q-dialog v-model="showAddTask">
-      <add-task />
+      <add-task @close="showAddTask = false" />
     </q-dialog>
   </q-page>
 </template>

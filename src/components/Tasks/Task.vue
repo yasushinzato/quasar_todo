@@ -14,8 +14,8 @@
     <q-item-section>
       <q-item-label　:class="{ 'text-strikethrough' : task.completed }">{{ task.name }}</q-item-label>
     </q-item-section>
-    <!-- 日付と時間。横並びで日付と時間は縦並び -->
-    <q-item-section side>
+    <!-- 日付と時間。横並びで日付と時間は縦並び. 日付が登録されてなければ非表示 -->
+    <q-item-section v-if="task.dueDate" side>
       <div class="row">
         <div class="column justify-center">
           <q-icon name="event" size="18px" class="q-mr-xs" />

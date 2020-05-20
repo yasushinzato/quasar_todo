@@ -15,12 +15,13 @@
             clearable
             outlined
             color="purple-12"
+            autofocus
             ref="name"
             v-model="taskToSubmit.name"
             label="タスク内容"
             class="col"
             :rules="[val => !!val || 'タスクが未入力です']"
-          />
+          ></q-input>
           <!-- <q-input outlined v-model="taskToSubmit.name" label="タスク内容" /> -->
         </div>
 
@@ -28,6 +29,13 @@
         <div class="row q-mb-sm">
           <q-input outlined v-model="taskToSubmit.dueDate" label="日付">
             <template v-slot:append>
+              <!-- ☓ボタンでの入力クリアの位置調整したいのと他項目とも連動するので、clearable 属性ではなく、実装する -->
+              <q-icon
+                v-if="taskToSubmit.dueDate"
+                name="close"
+                @click="clearDueDate"
+                class="cursor-pointer"
+              />
               <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
                   <q-date v-model="taskToSubmit.dueDate" @input="() => $refs.qDateProxy.hide()" />
@@ -37,10 +45,16 @@
           </q-input>
         </div>
 
-        <!-- 時間（時計付き） https://quasar.dev/vue-components/time#With-QInput-->
-        <div class="row q-mb-sm">
-          <q-input outlined v-model="taskToSubmit.dueTime" label="時間">
+        <!-- 時間（時計付き）日付が入力されたときのみ表示する https://quasar.dev/vue-components/time#With-QInput-->
+        <div v-if="taskToSubmit.dueDate" class="row q-mb-sm">
+          <q-input outlined v-model="taskToSubmit.dueTime" label="時間" class="col">
             <template v-slot:append>
+              <q-icon
+                v-if="taskToSubmit.dueTime"
+                name="close"
+                @click="taskToSubmit.dueTime = ''"
+                class="cursor-pointer"
+              />
               <q-icon name="access_time" class="cursor-pointer">
                 <q-popup-proxy transition-show="scale" transition-hide="scale">
                   <q-time v-model="taskToSubmit.dueTime" />
@@ -69,7 +83,7 @@ export default {
         name: "",
         dueDate: "",
         dueTime: "",
-        complited: false
+        completed: false
       }
     };
   },
@@ -87,6 +101,12 @@ export default {
     submitTask() {
       // console.log("submitTask");
       this.addTask(this.taskToSubmit);
+      // PageTodo.vueの@closeで追加モーダルの表示を制御
+      this.$emit("close");
+    },
+    clearDueDate() {
+      this.taskToSubmit.dueDate = "";
+      this.taskToSubmit.dueTime = "";
     }
   }
 };
