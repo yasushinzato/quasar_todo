@@ -9,6 +9,10 @@ PCとモバイルでの開発が容易にできるフレームワーク
 `quasar dev`
 起動は2分くらいと遅いが、ソースコードを保存すると即反映されるようになる。
 
+
+- 利用イメージ
+![usage_image](./Doc_image/Quasar_todo.gif)
+
 - PCサイズでの画面表示  
 ![PC_image](./Doc_image/PC_size.PNG)
 
