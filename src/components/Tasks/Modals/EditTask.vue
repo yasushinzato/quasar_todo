@@ -1,6 +1,6 @@
 <template>
   <q-card>
-    <modal-header>タスク追加</modal-header>
+    <modal-header>タスク編集</modal-header>
     <form @submit.prevent="submitForm">
       <q-card-section class="q-pt-none">
         <!-- タスク入力欄呼び出し. ボタンモーダルでvalidateするため、refを追記-->
@@ -25,19 +25,16 @@
 import { mapActions } from "vuex";
 
 export default {
+  // 編集なので、propsを追記
+  props: ["task", "id"],
   data() {
     return {
-      taskToSubmit: {
-        name: "",
-        dueDate: "",
-        dueTime: "",
-        completed: false
-      }
+      taskToSubmit: {}
     };
   },
   methods: {
-    // store-tasks.jsのaddTaskを実行できるようにする
-    ...mapActions("tasks", ["addTask"]),
+    // store-tasks.jsのupdateTaskを実行できるようにする
+    ...mapActions("tasks", ["updateTask"]),
     submitForm() {
       // console.log("submitForm");
       this.$refs.modalTaskName.$refs.name.validate();
@@ -48,7 +45,11 @@ export default {
     },
     submitTask() {
       // console.log("submitTask");
-      this.addTask(this.taskToSubmit);
+      // updateではidとタスクオブジェクトを渡す。
+      this.updateTask({
+        id: this.id,
+        updates: this.taskToSubmit
+      });
       // PageTodo.vueの@closeで追加モーダルの表示を制御
       this.$emit("close");
     },
@@ -68,6 +69,10 @@ export default {
       .default,
     "modal-button": require("components/Tasks/Modals/shares/ModalButton.vue")
       .default
+  },
+  mounted() {
+    // 編集モーダルが読み込まれたとき、オブジェクトをセットする。
+    this.taskToSubmit = Object.assign({}, this.task);
   }
 };
 </script>
