@@ -1,9 +1,16 @@
 <template>
   <q-page class="q-pa-md">
-    <!-- タスク一覧 タスクがないときバーが表示されるので、非表示にする-->
-    <q-list v-if="Object.keys(tasks).length" separator bordered>
-      <task v-for="(task, key) in tasks" :key="key" :task="task" :id="key"></task>
-    </q-list>
+    <!-- タスクがない場合バナーで無しメッセージ表示.NoTasks.vue側のクリックイベントを呼び出し -->
+    <no-tasks v-if="!Object.keys(tasksTodo).length" @showAddTask="showAddTask = true" />
+
+    <!-- タスク一覧 -->
+    <tasks-todo v-else :tasksTodo="tasksTodo" />
+
+    <!-- タスク完了一覧 -->
+    <tasks-todo-complete
+      v-if="Object.keys(tasksTodoCompleted).length"
+      :tasksTodoCompleted="tasksTodoCompleted"
+    ></tasks-todo-complete>
 
     <!-- タスク追加ボタン -->
     <div class="absolute-bottom text-center q-mb-lg">
@@ -28,13 +35,15 @@ export default {
     };
   },
   computed: {
-    tasks() {
-      return this.$store.getters["tasks/tasks"];
-    }
+    ...mapGetters("tasks", ["tasksTodo", "tasksTodoCompleted"])
   },
   methods: {},
   components: {
-    task: require("components/Tasks/Task.vue").default,
+    // Task.vueはそれぞれの親であるコンポーネント側で読み込む。
+    "tasks-todo": require("components/Tasks/TasksTodo.vue").default,
+    "no-tasks": require("components/Tasks/NoTasks.vue").default,
+    "tasks-todo-complete": require("components/Tasks/TasksTodoCompleted.vue")
+      .default,
     "add-task": require("components/Tasks/Modals/AddTask.vue").default
   }
 };

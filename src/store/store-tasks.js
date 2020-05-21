@@ -66,9 +66,29 @@ const actions = {
 }
 
 const getters = {
-  tasks: (state) => {
-    return state.tasks
-  }
+  // 作業中のタスク一覧
+  tasksTodo: (state) => {
+    let tasks = {}
+    Object.keys(state.tasks).forEach(function (key) {
+      let task = state.tasks[key]
+      // console.log('task:', task)
+      if (!task.completed) {
+        tasks[key] = task
+      }
+    })
+    return tasks
+  },
+  // 完了のタスク一覧
+  tasksTodoCompleted: (state) => {
+    let tasks = {}
+    Object.keys(state.tasks).forEach(function (key) {
+      let task = state.tasks[key]
+      if (task.completed) {
+        tasks[key] = task
+      }
+    })
+    return tasks
+  },
 }
 
 export default {

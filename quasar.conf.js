@@ -58,7 +58,9 @@ module.exports = function (/* ctx */) {
         // モーダルを追加 https://quasar.dev/vue-components/dialog  
         'QDialog',
         'QTime',
-        'QForm'
+        'QForm',
+        // Todo一覧とTodo完了済みバナー
+        'QBanner'
       ],
       directives: [
         // モーダルを追加
