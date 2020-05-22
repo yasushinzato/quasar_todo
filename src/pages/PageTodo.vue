@@ -1,10 +1,19 @@
 <template>
   <q-page class="q-pa-md">
+    <!-- 検索ボックス -->
+    <div class="row q-mb-lg">
+      <search></search>
+    </div>
+    <p
+      v-if="search && !Object.keys(tasksTodo).length && !Object.keys(tasksTodoCompleted).length"
+    >検索結果はありません</p>
+
     <!-- タスクがない場合バナーで無しメッセージ表示.NoTasks.vue側のクリックイベントを呼び出し -->
-    <no-tasks v-if="!Object.keys(tasksTodo).length" @showAddTask="showAddTask = true" />
+    <!-- 検索結果がない場合、タスクなしメッセージを表示しない。 -->
+    <no-tasks v-if="!Object.keys(tasksTodo).length && !search" @showAddTask="showAddTask = true" />
 
     <!-- タスク一覧 -->
-    <tasks-todo v-else :tasksTodo="tasksTodo" />
+    <tasks-todo v-if="Object.keys(tasksTodo).length" :tasksTodo="tasksTodo" />
 
     <!-- タスク完了一覧 -->
     <tasks-todo-complete
@@ -25,7 +34,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   data() {
@@ -35,7 +44,8 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("tasks", ["tasksTodo", "tasksTodoCompleted"])
+    ...mapGetters("tasks", ["tasksTodo", "tasksTodoCompleted"]),
+    ...mapState("tasks", ["search"])
   },
   methods: {},
   components: {
@@ -44,7 +54,8 @@ export default {
     "no-tasks": require("components/Tasks/NoTasks.vue").default,
     "tasks-todo-complete": require("components/Tasks/TasksTodoCompleted.vue")
       .default,
-    "add-task": require("components/Tasks/Modals/AddTask.vue").default
+    "add-task": require("components/Tasks/Modals/AddTask.vue").default,
+    search: require("components/Tasks/Tools/Search.vue").default
   }
 };
 </script>

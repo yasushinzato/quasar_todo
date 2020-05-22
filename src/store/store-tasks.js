@@ -23,6 +23,7 @@ const state = {
       dueTime: "15:30"
     },
   },
+  search: ''
 }
 
 const mutations = {
@@ -39,6 +40,9 @@ const mutations = {
   // AddTaskコンポーネント側にimportして利用する
   addTask(state, payload) {
     Vue.set(state.tasks, payload.id, payload.task)
+  },
+  setSearch(state, value) {
+    state.search = value
   }
 }
 
@@ -62,15 +66,38 @@ const actions = {
       task: task
     }
     commit('addTask', payload)
+  },
+  setSearch({ commit }, value) {
+    commit('setSearch', value)
   }
 }
 
 const getters = {
+  // 検索結果のタスク. それぞれのタスク一覧にgettersで取得させる
+  tasksFilterd: (state) => {
+    let tasksFilterd = {}
+    if (state.search) {
+      Object.keys(state.tasks).forEach(function (key) {
+        let task = state.tasks[key],
+          // アルファベットの大文字と小文字が区別されるので、少文字に変換
+          taskNameLowerCase = task.name.toLowerCase(),
+          searchLowerCase = state.search.toLowerCase()
+        // if (task.name.includes(state.search)) {
+        if (taskNameLowerCase.includes(searchLowerCase)) {
+          tasksFilterd[key] = task
+        }
+      })
+      return tasksFilterd
+    }
+    return state.tasks
+  },
+
   // 作業中のタスク一覧
-  tasksTodo: (state) => {
+  tasksTodo: (state, getters) => {
+    let tasksFilterd = getters.tasksFilterd
     let tasks = {}
-    Object.keys(state.tasks).forEach(function (key) {
-      let task = state.tasks[key]
+    Object.keys(tasksFilterd).forEach(function (key) {
+      let task = tasksFilterd[key]
       // console.log('task:', task)
       if (!task.completed) {
         tasks[key] = task
@@ -79,10 +106,11 @@ const getters = {
     return tasks
   },
   // 完了のタスク一覧
-  tasksTodoCompleted: (state) => {
+  tasksTodoCompleted: (state, getters) => {
+    let tasksFilterd = getters.tasksFilterd
     let tasks = {}
-    Object.keys(state.tasks).forEach(function (key) {
-      let task = state.tasks[key]
+    Object.keys(tasksFilterd).forEach(function (key) {
+      let task = tasksFilterd[key]
       if (task.completed) {
         tasks[key] = task
       }
