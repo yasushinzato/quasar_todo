@@ -1,8 +1,10 @@
 <template>
   <!-- チェックされたら、薄い緑色、未完了は薄いオレンジ -->
+  <!-- 長押し(Touch Hold)で編集モーダルを表示する.メソッドで実装しないとモーダルが全表示されて閉じるボタンとかが使えなくなるので、メソッドで定義 -->
   <q-item
     @click="updateTask({ id: id, updates: { completed: !task.completed }})"
     :class="!task.completed ?  'bg-orange-1' : 'bg-green-1'"
+    v-touch-hold:1000.mouse="showEditTaskModal"
     clickable
     v-ripple
   >
@@ -32,7 +34,7 @@
     <q-item-section side>
       <div class="row">
         <!-- .stopで親要素のボタンクリックによるcompletedを更新しないようにする -->
-        <q-btn @click.stop="showEditTask = true" flat round color="primary" dense icon="edit" />
+        <q-btn @click.stop="showEditTaskModal" flat round color="primary" dense icon="edit" />
         <q-btn @click.stop="promptToDelete(id)" flat round color="red" dense icon="delete" />
       </div>
     </q-item-section>
@@ -58,6 +60,10 @@ export default {
     }
   },
   methods: {
+    showEditTaskModal() {
+      // console.log("クリック長押し機能の確認")
+      this.showEditTask = true
+    },
     // mapActionsでstore-tasks.jsのActionを呼び出す
     ...mapActions('tasks', ['updateTask', 'deleteTask']),
     promptToDelete(id) {

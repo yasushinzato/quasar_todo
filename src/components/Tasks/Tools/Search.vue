@@ -1,5 +1,12 @@
 <template>
-  <q-input v-model="searchField" outlined label="検索" class="col">
+  <q-input
+    v-model="searchField"
+    @keyup.esc="searchField = ''"
+    v-select-all
+    outlined
+    label="検索"
+    class="col"
+  >
     <template v-slot:append>
       <q-icon
         v-if="searchField !== ''"
@@ -14,6 +21,8 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
+import { selectAll } from "src/directives/directive-select-all";
+
 export default {
   // store-tasks.jsからsearch変数を取得する
   computed: {
@@ -31,6 +40,10 @@ export default {
   // store-tasks.jsからsetSearchアクションを使用できるようにする
   methods: {
     ...mapActions("tasks", ["setSearch"])
+  },
+  directives: {
+    // テキストを全選択状態にする。
+    selectAll
   }
 };
 </script>

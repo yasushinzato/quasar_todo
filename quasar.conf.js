@@ -66,7 +66,9 @@ module.exports = function (/* ctx */) {
       ],
       directives: [
         // モーダルを追加
-        'ClosePopup'
+        'ClosePopup',
+        // クリック長押し
+        'TouchHold'
       ],
 
       // Quasar plugins
