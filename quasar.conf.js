@@ -60,7 +60,9 @@ module.exports = function (/* ctx */) {
         'QTime',
         'QForm',
         // Todo一覧とTodo完了済みバナー
-        'QBanner'
+        'QBanner',
+        // ソートの選択で利用
+        'QSelect'
       ],
       directives: [
         // モーダルを追加

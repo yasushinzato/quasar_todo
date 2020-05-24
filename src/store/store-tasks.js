@@ -13,7 +13,7 @@ const state = {
     'ID2': {
       name: "「あなたはなぜチェックリストを使わないのか？」を読む",
       completed: false,
-      dueDate: "2020/05/18",
+      dueDate: "2020/05/20",
       dueTime: "13:00"
     },
     'ID3': {
@@ -22,8 +22,16 @@ const state = {
       dueDate: "2020/05/18",
       dueTime: "15:30"
     },
+    'ID4': {
+      name: "Get Apple",
+      completed: false,
+      dueDate: "2020/05/24",
+      dueTime: "15:30"
+    },
+
   },
-  search: ''
+  search: '',
+  sort: 'name'
 }
 
 const mutations = {
@@ -43,6 +51,9 @@ const mutations = {
   },
   setSearch(state, value) {
     state.search = value
+  },
+  setSort(state, value) {
+    state.sort = value
   }
 }
 
@@ -69,16 +80,41 @@ const actions = {
   },
   setSearch({ commit }, value) {
     commit('setSearch', value)
+  },
+  setSort({ commit }, value) {
+    commit('setSort', value)
   }
 }
 
 const getters = {
+  // タスクのソート
+  tasksSorted: (state) => {
+    let tasksSorted = {},
+      keysOrderd = Object.keys(state.tasks)
+
+    keysOrderd.sort((a, b) => {
+      let taskAProp = state.tasks[a][state.sort].toLowerCase(),
+        taskBProp = state.tasks[b][state.sort].toLowerCase()
+      // 昇順で並び替え
+      if (taskAProp > taskBProp) return 1
+      else if (taskAProp < taskBProp) return - 1
+      else return 0
+    })
+
+    // console.log('keyOrderd:', keysOrderd)
+    keysOrderd.forEach((key) => {
+      tasksSorted[key] = state.tasks[key]
+    })
+
+    return tasksSorted
+  },
   // 検索結果のタスク. それぞれのタスク一覧にgettersで取得させる
-  tasksFilterd: (state) => {
-    let tasksFilterd = {}
+  tasksFilterd: (state, getters) => {
+    let tasksSorted = getters.tasksSorted,
+      tasksFilterd = {}
     if (state.search) {
-      Object.keys(state.tasks).forEach(function (key) {
-        let task = state.tasks[key],
+      Object.keys(tasksSorted).forEach(function (key) {
+        let task = tasksSorted[key],
           // アルファベットの大文字と小文字が区別されるので、少文字に変換
           taskNameLowerCase = task.name.toLowerCase(),
           searchLowerCase = state.search.toLowerCase()
@@ -89,7 +125,7 @@ const getters = {
       })
       return tasksFilterd
     }
-    return state.tasks
+    return tasksSorted
   },
 
   // 作業中のタスク一覧
