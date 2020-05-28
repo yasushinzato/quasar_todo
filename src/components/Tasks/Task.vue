@@ -27,7 +27,8 @@
         <div class="column">
           <q-item-label class="row justify-end" caption>{{ task.dueDate | niceDate }}</q-item-label>
           <q-item-label class="row justify-end" caption>
-            <small>{{ task.dueTime }}</small>
+            <!-- 設定画面の時間表示設定により、表示内容を変更する -->
+            <small>{{ taskDueTime }}</small>
           </q-item-label>
         </div>
       </div>
@@ -52,8 +53,8 @@
 </template>
 
 <script>
-// 検索結果のテキストを取得するため、mapStateをインポート
-import  { mapState, mapActions } from 'vuex'
+// 検索結果のテキストを取得するため、mapStateをインポート. 設定ページの情報取得でgetterをインポート
+import  { mapState, mapActions, mapGetters } from 'vuex'
 import { date } from 'quasar'
 // destructuring to keep only what is needed
 const { addToDate } = date
@@ -68,7 +69,16 @@ export default {
     }
   },
   computed: {
-    ...mapState('tasks', ['search'])
+    ...mapState('tasks', ['search']),
+    // 設定画面からの情報を取得し、時間表示を変更する
+    ...mapGetters('settings', ['settings']),
+    taskDueTime() {
+      if (this.settings.show12HourTimeFormat) {
+        // 時間だけだと書式設定できないので、日付も渡す.
+        return date.formatDate(this.task.dueDate + ' ' + this.task.dueTime, 'Ah:mm') 
+      }
+      return this.task.dueTime
+    }
   },
   methods: {
     showEditTaskModal() {
