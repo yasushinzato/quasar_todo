@@ -22,13 +22,6 @@ const state = {
       dueDate: "2020/05/18",
       dueTime: "15:30"
     },
-    'ID4': {
-      name: "Get Apple",
-      completed: false,
-      dueDate: "2020/05/24",
-      dueTime: "15:30"
-    },
-
   },
   search: '',
   sort: 'name'

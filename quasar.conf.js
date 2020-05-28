@@ -62,7 +62,9 @@ module.exports = function (/* ctx */) {
         // Todo一覧とTodo完了済みバナー
         'QBanner',
         // ソートの選択で利用
-        'QSelect'
+        'QSelect',
+        // スクロール
+        'QScrollArea'
       ],
       directives: [
         // モーダルを追加
@@ -114,7 +116,8 @@ module.exports = function (/* ctx */) {
 
     // animations: 'all', // --- includes all animations
     // https://quasar.dev/options/animations
-    animations: [],
+    // 作業中タスクがなくなったときのメッセージをアニメーション. https://quasar.dev/options/animations#Usage
+    animations: ['zoomIn', 'zoomOut'],
 
     // https://quasar.dev/quasar-cli/developing-ssr/configuring-ssr
     ssr: {
