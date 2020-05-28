@@ -1,7 +1,8 @@
 <template>
   <transition appear enter-active-class="animated zoomIn" leave-active-class="animated zoomOut">
     <!-- ヘッダーを表示 -->
-    <div :class=""{ 'q-mt-lg' : !settings.showTasksInOneList}>
+    <!-- 設定画面の真偽値(settings.showTasksInOneList)でリストを一つにまとめて表示するか制御する -->
+    <div :class="{ 'q-mt-lg' : !settings.showTasksInOneList}">
       <!-- 設定画面の真偽値でリストを一つにまとめて表示するか制御する -->
       <list-header v-if="!settings.showTasksInOneList" bgcolor="bg-green-4">タスク完了</list-header>
 

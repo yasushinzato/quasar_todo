@@ -1,3 +1,5 @@
+import { LocalStorage } from 'quasar'
+
 // 12時表記の設定と
 // 一覧を一つにまとめる設定
 const state = {
@@ -13,16 +15,40 @@ const mutations = {
   },
   setShowTasksInOneList(state, value) {
     state.settings.showTasksInOneList = value
+  },
+  // ローカルストレージ保存
+  setSettings(state, settings) {
+    Object.assign(state.settings, settings)
   }
+
 }
 
 const actions = {
-  setShow12HourTimeFormat({ commit }, value) {
+  setShow12HourTimeFormat({ commit, dispatch }, value) {
     commit('setShow12HourTimeFormat', value)
+    // ローカルストレージに保存
+    // localStorage.setItem('show12HourTimeFormat', value) ←プラグインをインストールしないで使える
+    dispatch('saveSettings')
+
   },
-  setShowTasksInOneList({ commit }, value) {
+  setShowTasksInOneList({ commit, dispatch }, value) {
     commit('setShowTasksInOneList', value)
+    // ローカルストレージに保存
+    // localStorage.setItem('showTasksInOneList', value) ←プラグインをインストールしないで使える
+    dispatch('saveSettings')
   },
+  // ローカルストレージ保存アクション
+  saveSettings({ settings }) {
+    LocalStorage.set('quasar-todo-settings-shin', state.settings)
+  },
+  // ローカルストレージ取得アクション
+  getSettings({ commit }) {
+    let settings = LocalStorage.getItem('quasar-todo-settings-shin')
+    if (settings) {
+      commit('setSettings', settings)
+    }
+  }
+
 }
 
 const getters = {

@@ -76,7 +76,9 @@ module.exports = function (/* ctx */) {
       // Quasar plugins
       // ダイアログプラグインを追加す
       plugins: [
-        'Dialog'
+        'Dialog',
+        // ローカルストレージに保存 https://quasar.dev/quasar-plugins/web-storage#Installation
+        'LocalStorage',
       ]
     },
 
