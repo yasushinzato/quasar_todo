@@ -23,10 +23,12 @@
 
 <script>
 import { mapActions } from "vuex";
+import mixinAddEditTask from "src/mixins/mixin-add-edit-task";
 
 export default {
   // 編集なので、propsを追記
   props: ["task", "id"],
+  mixins: [mixinAddEditTask],
   data() {
     return {
       taskToSubmit: {}
@@ -35,14 +37,7 @@ export default {
   methods: {
     // store-tasks.jsのupdateTaskを実行できるようにする
     ...mapActions("tasks", ["updateTask"]),
-    submitForm() {
-      // console.log("submitForm");
-      this.$refs.modalTaskName.$refs.name.validate();
-      // console.log(this.$refs.name);  // 未入力の場合、hasErrorがtrueになる。
-      if (!this.$refs.modalTaskName.$refs.name.hasError) {
-        this.submitTask();
-      }
-    },
+
     submitTask() {
       // console.log("submitTask");
       // updateではidとタスクオブジェクトを渡す。
@@ -52,23 +47,7 @@ export default {
       });
       // PageTodo.vueの@closeで追加モーダルの表示を制御
       this.$emit("close");
-    },
-    clearDueDate() {
-      this.taskToSubmit.dueDate = "";
-      this.taskToSubmit.dueTime = "";
     }
-  },
-  components: {
-    "modal-header": require("components/Tasks/Modals/shares/ModalHeader.vue")
-      .default,
-    "modal-task-name": require("components/Tasks/Modals/shares/ModalTaskName.vue")
-      .default,
-    "modal-due-date": require("components/Tasks/Modals/shares/ModalDueDate.vue")
-      .default,
-    "modal-due-time": require("components/Tasks/Modals/shares/ModalDueTime.vue")
-      .default,
-    "modal-button": require("components/Tasks/Modals/shares/ModalButton.vue")
-      .default
   },
   mounted() {
     // 編集モーダルが読み込まれたとき、オブジェクトをセットする。

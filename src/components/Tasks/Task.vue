@@ -101,8 +101,6 @@ export default {
     },
     // 検索した結果のうち、ヒットしている単語を強調する
     searchHighlight(value, search) {
-      console.log('検索タスクvalue:', value);
-      console.log('検索テキスト:', search);
       if (search) {
         // return value.replace(search, '<span class="bg-yellow-6">' + search + '</span>')
         // iで大文字小文字関係なくヒットした箇所、gで複数箇所でヒットした文言を正規表現で取得する
