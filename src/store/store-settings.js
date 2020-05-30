@@ -43,6 +43,7 @@ const actions = {
   },
   // ローカルストレージ取得アクション
   getSettings({ commit }) {
+    console.log("settingストア");
     let settings = LocalStorage.getItem('quasar-todo-settings-shin')
     if (settings) {
       commit('setSettings', settings)

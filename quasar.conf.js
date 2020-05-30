@@ -64,7 +64,10 @@ module.exports = function (/* ctx */) {
         // ソートの選択で利用
         'QSelect',
         // スクロール
-        'QScrollArea'
+        'QScrollArea',
+        // タブ
+        'QTabPanels',
+        'QTabPanel',
       ],
       directives: [
         // モーダルを追加

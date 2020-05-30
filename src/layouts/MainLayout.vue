@@ -7,6 +7,9 @@
         <!-- 標準で作成されるトグルボタンは削除 -->
 
         <q-toolbar-title class="absolute-center">Todo App</q-toolbar-title>
+
+        <!-- ログイン -->
+        <q-btn flat icon-right="account_circle" label="ログイン" class="absolute-right" />
       </q-toolbar>
     </q-header>
 
