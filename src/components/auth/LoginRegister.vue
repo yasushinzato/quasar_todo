@@ -50,6 +50,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   // pageAuthからのデータを受け取り
   props: ["tab"],
@@ -62,6 +64,8 @@ export default {
     };
   },
   methods: {
+    // store-authのactionを利用する
+    ...mapActions("auth", ["registerUser", "loginUser"]),
     // [javascript valid email address]で検索
     isValidEmailAddress(email) {
       const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -72,10 +76,12 @@ export default {
       this.$refs.email.validate();
       this.$refs.password.validate();
       if (!this.$refs.email.hasError && !this.$refs.password.hasError) {
-        if (this.tab == "login") {
-          console.log("ログイン");
+        if (this.tab == "ログイン") {
+          // console.log("ログイン");
+          this.loginUser(this.formData);
         } else {
-          console.log("登録");
+          // console.log("登録");
+          this.registerUser(this.formData);
         }
       }
     }

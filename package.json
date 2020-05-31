@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@quasar/extras": "^1.0.0",
+    "firebase": "^7.14.6",
     "node-sass": "^4.14.1",
     "quasar": "^1.0.0",
     "sass-loader": "^8.0.2"
