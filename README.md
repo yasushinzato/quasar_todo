@@ -65,6 +65,11 @@ import "firebase/auth";
   export { firebaseAuth }
 ```
 
+### URLでログイン状態によりauthページを表示させる
+コマンドを実行する
+`quasar new boot router-auth`  
+quasar.config.js
+が作られるので、→の記述を行う。`boot:['router-auth']`
 
 
 

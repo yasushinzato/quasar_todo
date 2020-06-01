@@ -1,4 +1,6 @@
+import { LocalStorage, Loading } from 'quasar'
 import { firebaseAuth } from 'boot/firebase'
+import { showErrorMessage } from 'src/function/function-show-error-message'
 
 const state = {
   // ログイン状態を管理。MainLayoutのヘッダーのボタンを制御する
@@ -15,22 +17,32 @@ const mutations = {
 const actions = {
   // ユーザの登録（作成）
   registerUser({ }, payload) {
+    Loading.show()
     // console.log("registerUser:", payload);
     // https://firebase.google.com/docs/reference/js/firebase.auth.Auth#createuserwithemailandpassword
     // firebase.auth().createUserWithEmailAndPassword(email, password)
     firebaseAuth.createUserWithEmailAndPassword(payload.email, payload.password).then(response => {
       console.log('response: ', response);
     }).catch(error => {
-      console.log('error.message:', error.message)
+      // console.log('error.message:', error.message)
+      showErrorMessage(error.message)
     })
   },
   // ログイン
   loginUser({ }, payload) {
+    Loading.show()
     // https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signinwithemailandpassword
     firebaseAuth.signInWithEmailAndPassword(payload.email, payload.password).then(response => {
       console.log('response: ', response);
     }).catch(error => {
-      console.log('error.message:', error.message)
+      // console.log('エラー', error)
+      // console.log('error.message:', error.message)
+      // エラーコードでメッセージを表示する。エラーメッセージは英語なので、日本語メッセージを設定する。
+      if (error.code === 'auth/user-not-found' || error.code === 'auth/wrong-password') {
+        showErrorMessage('メールアドレスまたはパスワードの<font color="red">エラー</font>です。<br>再入力してください。')
+      } else {
+        showErrorMessage(error.message)
+      }
     })
   },
   // ログアウト. MainLayout.vueで管理しているので、
@@ -42,12 +54,19 @@ const actions = {
   handleAuthStateChange({ commit }) {
     // console.log('handleAuthStateChange');
     // https://firebase.google.com/docs/reference/js/firebase.auth.Auth#onauthstatechanged
-    firebaseAuth.onAuthStateChanged(function (user) {
+    firebaseAuth.onAuthStateChanged(user => {
+      Loading.hide()
       if (user) {
         // User is signed in.
         commit('setLoggedIn', true)
+        LocalStorage.set('quasar-todo-loggedIn', true)
+        // ログインしていたら、トップページを表示。 functionだと独自関数があるため、ルーターのトップページ遷移が利用できない。
+        this.$router.push('/')
       } else {
         commit('setLoggedIn', false)
+        LocalStorage.set('quasar-todo-loggedIn', false)
+        // ユーザー履歴を削除して、認証ページを表示する。
+        this.$router.replace('/auth')
       }
     });
 
