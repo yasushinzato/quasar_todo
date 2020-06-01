@@ -9,7 +9,22 @@
         <q-toolbar-title class="absolute-center">Todo App</q-toolbar-title>
 
         <!-- ログイン -->
-        <q-btn flat icon-right="account_circle" label="ログイン" class="absolute-right" />
+        <q-btn
+          v-if="!loggedIn"
+          flat
+          icon-right="account_circle"
+          label="ログイン"
+          class="absolute-right"
+        />
+        <!-- ログアウト -->
+        <q-btn
+          v-else
+          @click="logoutUser"
+          flat
+          icon-right="account_circle"
+          label="ログアウト"
+          class="absolute-right"
+        />
       </q-toolbar>
     </q-header>
 
@@ -57,6 +72,7 @@
 </template>
 
 <script>
+import { mapState, mapActions } from "vuex"; // ログイン状態を取得。ログアウトActionをimport
 import EssentialLink from "components/EssentialLink";
 
 export default {
@@ -84,6 +100,12 @@ export default {
         }
       ]
     };
+  },
+  computed: {
+    ...mapState("auth", ["loggedIn"])
+  },
+  methods: {
+    ...mapActions("auth", ["logoutUser"])
   }
 };
 </script>

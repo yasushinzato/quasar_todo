@@ -1,11 +1,15 @@
 import { firebaseAuth } from 'boot/firebase'
 
 const state = {
+  // ログイン状態を管理。MainLayoutのヘッダーのボタンを制御する
+  loggedIn: false
 
 }
 
 const mutations = {
-
+  setLoggedIn(state, value) {
+    state.loggedIn = value
+  }
 }
 
 const actions = {
@@ -28,6 +32,25 @@ const actions = {
     }).catch(error => {
       console.log('error.message:', error.message)
     })
+  },
+  // ログアウト. MainLayout.vueで管理しているので、
+  logoutUser() {
+    // https://firebase.google.com/docs/reference/js/firebase.auth.Auth#signout
+    firebaseAuth.signOut()
+  },
+  // ログイン状態によりボタンの制御を行う。起動時のログイン状態を確認するため、App.vueに定義
+  handleAuthStateChange({ commit }) {
+    // console.log('handleAuthStateChange');
+    // https://firebase.google.com/docs/reference/js/firebase.auth.Auth#onauthstatechanged
+    firebaseAuth.onAuthStateChanged(function (user) {
+      if (user) {
+        // User is signed in.
+        commit('setLoggedIn', true)
+      } else {
+        commit('setLoggedIn', false)
+      }
+    });
+
 
   }
 }

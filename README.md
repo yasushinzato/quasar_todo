@@ -37,4 +37,34 @@ Node.jsアプリを構成する。
 ステップ 3: Firebase SDK を追加して Firebase を初期化する
 https://firebase.google.com/docs/web/setup?authuser=0#node.js-%E3%82%A2%E3%83%97%E3%83%AA
 `npm install --save firebase`
+上で決めた名前のjsファイルにコピーして貼り付ける。今回は認証だけなので、firestoreは除いておく。
+```javascript
+import * as firebase from "firebase/app";
+
+// Add the Firebase services that you want to use
+import "firebase/auth";
+// import "firebase/firestore";
+```
+
+```javascript
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCT3sLRb82AHb04kpjkL-Or574w9WqyCEs",
+    authDomain: "awesome-todo-7b83c.firebaseapp.com",
+    databaseURL: "https://awesome-todo-7b83c.firebaseio.com",
+    projectId: "awesome-todo-7b83c",
+    storageBucket: "awesome-todo-7b83c.appspot.com",
+    messagingSenderId: "729272041436",
+    appId: "1:729272041436:web:48e2d6ca7d0c418b629919"
+  };
+  // Initialize Firebase
+  // 認証用で下記の通り書き換える
+  let firebaseApp = firebase.initializeApp(firebaseConfig);
+  let firebaseAuth = firebaseApp.auth()
+
+  export { firebaseAuth }
+```
+
+
+
 
