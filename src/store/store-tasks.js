@@ -78,14 +78,14 @@ const actions = {
   setSort({ commit }, value) {
     commit('setSort', value)
   },
-  // FirebaseのDBにアクセスして、ユーザのタスクを取得する
+  // FirebaseのDBにアクセスして、ユーザのタスクを取得する. 
   fbReadData({ commit }) {
     console.log('Firebaseデータベースにアクセス');
     // console.log(firebaseAuth.currentUser.uid);
     let userId = firebaseAuth.currentUser.uid
     let userTasks = firebaseDb.ref('tasks/' + userId)
     console.log(userTasks)
-    // 対象ユーザのデータを取得
+    // 対象ユーザのデータを取得. mutationsに渡す引数をセットする
     userTasks.on('child_added', snapshot => {
       console.log('snapshot:', snapshot);
       let task = snapshot.val()
@@ -97,8 +97,24 @@ const actions = {
       }
 
       commit('addTask', payload)
-
     })
+
+    // 対象ユーザのデータが変更されたら、即反映させる. mutationsに渡す引数をセットする
+    userTasks.on('child_changed', snapshot => {
+      let task = snapshot.val()
+      let payload = {
+        id: snapshot.key,
+        updates: task
+      }
+      commit('updateTask', payload)
+    })
+
+    // 削除されたら、即反映させる. mutationsに渡す引数をセットする
+    userTasks.on('child_removed', snapshot => {
+      let taskId = snapshot.key
+      commit('deleteTask', taskId)
+    })
+
   }
 }
 
