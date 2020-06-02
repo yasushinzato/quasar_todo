@@ -53,24 +53,29 @@ const mutations = {
 
 const actions = {
   // mutationsで状態を変更する
-  updateTask({ commit }, payload) {
-    // console.log('updateTask action')
+  // Firebaseのデータベースに追加するためcommit を dispatchに修正
+  updateTask({ dispatch }, payload) {
     // console.log('payload', payload)
-    commit('updateTask', payload)
+    // commit('updateTask', payload)
+    dispatch('fbUpdateTask', payload)
   },
-  deleteTask({ commit }, id) {
+  // Firebaseのデータベースに追加するためcommit を dispatchに修正
+  deleteTask({ dispatch }, id) {
     // console.log('delete id:', id)
-    commit('deleteTask', id)
+    // commit('deleteTask', id)
+    dispatch('fbDeleteTask', id)
   },
   // タスクの追加。 タスクのIDは一意のキーに設定する。 https://quasar.dev/quasar-utils/other-utils#Generate-UID
-  addTask({ commit }, task) {
+  // Firebaseのデータベースに追加するためcommit を dispatchに修正
+  addTask({ dispatch }, task) {
     let taskId = uid()
     // console.log('taskId:', taskId)
     let payload = {
       id: taskId,
       task: task
     }
-    commit('addTask', payload)
+    // commit('addTask', payload) 
+    dispatch('fbAddTask', payload)
   },
   setSearch({ commit }, value) {
     commit('setSearch', value)
@@ -115,7 +120,28 @@ const actions = {
       commit('deleteTask', taskId)
     })
 
-  }
+  },
+  // Firebaseのデータベースへタスクを追加する
+  fbAddTask({ }, payload) {
+    // console.log('fbAddTask payload', payload);
+    let userId = firebaseAuth.currentUser.uid
+    let taskRef = firebaseDb.ref('tasks/' + userId + '/' + payload.id)
+    taskRef.set(payload.task)
+  },
+  // 更新されたら、Firebaseのデータベースへ反映する
+  fbUpdateTask({ }, payload) {
+    let userId = firebaseAuth.currentUser.uid
+    let taskRef = firebaseDb.ref('tasks/' + userId + '/' + payload.id)
+    taskRef.update(payload.updates)
+  },
+  // 削除されたら、Firebaseのデータベースへ反映する
+  fbDeleteTask({ }, taskId) {
+    let userId = firebaseAuth.currentUser.uid
+    let taskRef = firebaseDb.ref('tasks/' + userId + '/' + taskId)
+    taskRef.remove()
+  },
+
+
 }
 
 const getters = {
