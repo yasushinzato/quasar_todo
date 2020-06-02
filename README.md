@@ -49,13 +49,12 @@ import "firebase/auth";
 ```javascript
   // Your web app's Firebase configuration
   var firebaseConfig = {
-    apiKey: "AIzaSyCT3sLRb82AHb04kpjkL-Or574w9WqyCEs",
-    authDomain: "awesome-todo-7b83c.firebaseapp.com",
+    apiKey: 
     databaseURL: "https://awesome-todo-7b83c.firebaseio.com",
     projectId: "awesome-todo-7b83c",
     storageBucket: "awesome-todo-7b83c.appspot.com",
     messagingSenderId: "729272041436",
-    appId: "1:729272041436:web:48e2d6ca7d0c418b629919"
+    
   };
   // Initialize Firebase
   // 認証用で下記の通り書き換える
