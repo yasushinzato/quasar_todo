@@ -25,7 +25,8 @@ const state = {
     // },
   },
   search: '',
-  sort: 'name'
+  sort: 'name',
+  tasksDownloaded: false
 }
 
 const mutations = {
@@ -48,6 +49,9 @@ const mutations = {
   },
   setSort(state, value) {
     state.sort = value
+  },
+  setTasksDownloaded(state, value) {
+    state.tasksDownloaded = value
   }
 }
 
@@ -89,7 +93,12 @@ const actions = {
     // console.log(firebaseAuth.currentUser.uid);
     let userId = firebaseAuth.currentUser.uid
     let userTasks = firebaseDb.ref('tasks/' + userId)
-    console.log(userTasks)
+
+    // 初回読み込み時のローディング
+    userTasks.once('value', snapshot => {
+      commit('setTasksDownloaded', true)
+    })
+    // console.log(userTasks)
     // 対象ユーザのデータを取得. mutationsに渡す引数をセットする
     userTasks.on('child_added', snapshot => {
       console.log('snapshot:', snapshot);
@@ -140,6 +149,7 @@ const actions = {
     let taskRef = firebaseDb.ref('tasks/' + userId + '/' + taskId)
     taskRef.remove()
   },
+
 
 
 }

@@ -67,6 +67,9 @@ const actions = {
         // NavigationDuplicated
         dispatch('tasks/fbReadData', null, { root: true })
       } else {
+        // ログアウト状態ならローディングの真偽値をfalseにしておく
+        commit('tasks/setTasksDownloaded', false, { root: true })
+        commit('setLoggedIn', false)
         commit('setLoggedIn', false)
         LocalStorage.set('quasar-todo-loggedIn', false)
         // ユーザー履歴を削除して、認証ページを表示する。
