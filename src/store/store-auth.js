@@ -51,7 +51,7 @@ const actions = {
     firebaseAuth.signOut()
   },
   // ログイン状態によりボタンの制御を行う。起動時のログイン状態を確認するため、App.vueに定義
-  handleAuthStateChange({ commit }) {
+  handleAuthStateChange({ commit, dispatch }) {
     // console.log('handleAuthStateChange');
     // https://firebase.google.com/docs/reference/js/firebase.auth.Auth#onauthstatechanged
     firebaseAuth.onAuthStateChanged(user => {
@@ -61,12 +61,16 @@ const actions = {
         commit('setLoggedIn', true)
         LocalStorage.set('quasar-todo-loggedIn', true)
         // ログインしていたら、トップページを表示。 functionだと独自関数があるため、ルーターのトップページ遷移が利用できない。
-        this.$router.push('/')
+        // NavigationDuplicatedエラーになるので、catchを追加
+        this.$router.push('/').catch(err => 0)
+        // Firebaseデータベースへのデータ読み込みを実行する。実装はstore-tasks.js
+        // NavigationDuplicated
+        dispatch('tasks/fbReadData', null, { root: true })
       } else {
         commit('setLoggedIn', false)
         LocalStorage.set('quasar-todo-loggedIn', false)
         // ユーザー履歴を削除して、認証ページを表示する。
-        this.$router.replace('/auth')
+        this.$router.replace('/auth').catch(err => 0)
       }
     });
 

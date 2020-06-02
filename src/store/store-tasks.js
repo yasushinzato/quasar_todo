@@ -1,27 +1,28 @@
 import Vue from 'vue'
 import { uid } from 'quasar'
+import { firebaseDb, firebaseAuth } from 'boot/firebase'
 
 const state = {
   // タスク配列をオブジェクト構造に変更
   tasks: {
-    'ID1': {
-      name: "QuasarでTodo作成",
-      completed: false,
-      dueDate: "2020/05/17",
-      dueTime: "18:00"
-    },
-    'ID2': {
-      name: "「あなたはなぜチェックリストを使わないのか？」を読む",
-      completed: false,
-      dueDate: "2020/05/20",
-      dueTime: "13:00"
-    },
-    'ID3': {
-      name: "「時間は存在しない」を読む",
-      completed: true,
-      dueDate: "2020/05/18",
-      dueTime: "15:30"
-    },
+    // 'ID1': {
+    //   name: "QuasarでTodo作成",
+    //   completed: false,
+    //   dueDate: "2020/05/17",
+    //   dueTime: "18:00"
+    // },
+    // 'ID2': {
+    //   name: "「あなたはなぜチェックリストを使わないのか？」を読む",
+    //   completed: false,
+    //   dueDate: "2020/05/20",
+    //   dueTime: "13:00"
+    // },
+    // 'ID3': {
+    //   name: "「時間は存在しない」を読む",
+    //   completed: true,
+    //   dueDate: "2020/05/18",
+    //   dueTime: "15:30"
+    // },
   },
   search: '',
   sort: 'name'
@@ -76,6 +77,28 @@ const actions = {
   },
   setSort({ commit }, value) {
     commit('setSort', value)
+  },
+  // FirebaseのDBにアクセスして、ユーザのタスクを取得する
+  fbReadData({ commit }) {
+    console.log('Firebaseデータベースにアクセス');
+    // console.log(firebaseAuth.currentUser.uid);
+    let userId = firebaseAuth.currentUser.uid
+    let userTasks = firebaseDb.ref('tasks/' + userId)
+    console.log(userTasks)
+    // 対象ユーザのデータを取得
+    userTasks.on('child_added', snapshot => {
+      console.log('snapshot:', snapshot);
+      let task = snapshot.val()
+      console.log('task: ', task)
+
+      let payload = {
+        id: snapshot.key,
+        task: task
+      }
+
+      commit('addTask', payload)
+
+    })
   }
 }
 
