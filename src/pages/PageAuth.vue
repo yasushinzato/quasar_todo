@@ -22,7 +22,8 @@
       <q-tab-panels v-model="tab" animated>
         <!-- <q-tab-panel name="login"> -->
         <q-tab-panel name="ログイン">
-          <login-register :tab="tab" />
+          <!-- ログインのときだけ、デフォルト用の値をセットする -->
+          <login-register :tab="tab" :defaultMail="defaultMail" :defaultPass="defaultPass" />
         </q-tab-panel>
 
         <!-- <q-tab-panel name="register"> -->
@@ -38,7 +39,10 @@
 export default {
   data() {
     return {
-      tab: "ログイン"
+      tab: "ログイン",
+      // ログインタブだけ選択時用のデフォルト設定値
+      defaultMail: "test@test.com",
+      defaultPass: "testtest"
     };
   },
   components: {

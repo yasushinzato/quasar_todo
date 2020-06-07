@@ -19,7 +19,7 @@
         lazy-rules
         ref="email"
         class="col"
-        v-on:keyup.esc="formData.password = ''"
+        v-on:keyup.esc="formData.email = ''"
         label="メールアドレス"
         stack-label
       />
@@ -54,15 +54,23 @@ import { mapActions } from "vuex";
 
 export default {
   // pageAuthからのデータを受け取り
-  props: ["tab"],
+  props: ["tab", "defaultMail", "defaultPass"],
   data() {
     return {
       formData: {
-        email: "",
-        password: ""
+        email: this.defaultMail,
+        password: this.defaultPass
       }
     };
   },
+  // computed: {
+  //   defaultSet() {
+  //     if (this.tab == "ログイン") {
+  //       (this.email = this.defaultMail), (this.password = this.defaultPass);
+  //     }
+  //     console.log("ログイン確認", this.tab);
+  //   }
+  // },
   methods: {
     // store-authのactionを利用する
     ...mapActions("auth", ["registerUser", "loginUser"]),

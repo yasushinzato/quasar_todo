@@ -69,6 +69,8 @@ module.exports = function (/* ctx */) {
         // タブ
         'QTabPanels',
         'QTabPanel',
+        // ローディングイメージ　https://quasar.dev/vue-components/spinners#Usage
+        'QSpinner'
       ],
       directives: [
         // モーダルを追加

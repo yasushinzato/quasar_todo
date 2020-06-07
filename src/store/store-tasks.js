@@ -44,6 +44,10 @@ const mutations = {
   addTask(state, payload) {
     Vue.set(state.tasks, payload.id, payload.task)
   },
+  // ログアウトしたときに、タスクをクリアする. store-authで呼び出す
+  clearTasks(state) {
+    state.tasks = {}
+  },
   setSearch(state, value) {
     state.search = value
   },

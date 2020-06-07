@@ -38,7 +38,7 @@
     >
       <!-- 背景色をヘッダーと同じにしたので、listをdarkに指定. textをgrey-4に設定 -->
       <q-list dark>
-        <q-item-label header>Navigation</q-item-label>
+        <q-item-label header>メニュー</q-item-label>
         <EssentialLink
           v-for="link in essentialLinks"
           :key="link.title"

@@ -67,6 +67,8 @@ const actions = {
         // NavigationDuplicated
         dispatch('tasks/fbReadData', null, { root: true })
       } else {
+        // ログアウト状態ならタスクを消去する
+        commit('tasks/clearTasks', null, { root: true })
         // ログアウト状態ならローディングの真偽値をfalseにしておく
         commit('tasks/setTasksDownloaded', false, { root: true })
         commit('setLoggedIn', false)
