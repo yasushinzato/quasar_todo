@@ -9,6 +9,9 @@ PCとモバイルでの開発が容易にできるフレームワーク
 `quasar dev`
 起動は2分くらいと遅いが、ソースコードを保存すると即反映されるようになる。
 
+## firebaseホスティング
+https://awesome-todo-7b83c.web.app/#/auth
+
 
 - 利用イメージ
 ![usage_image](./Doc_image/Quasar_todo.gif)
@@ -49,12 +52,13 @@ import "firebase/auth";
 ```javascript
   // Your web app's Firebase configuration
   var firebaseConfig = {
-    apiKey: 
+    apiKey: ,
+    authDomain: ,
     databaseURL: "https://awesome-todo-7b83c.firebaseio.com",
     projectId: "awesome-todo-7b83c",
     storageBucket: "awesome-todo-7b83c.appspot.com",
     messagingSenderId: "729272041436",
-    
+    appId: "1:729272041436:web:48e2d6ca7d0c418b629919"
   };
   // Initialize Firebase
   // 認証用で下記の通り書き換える
@@ -70,5 +74,12 @@ import "firebase/auth";
 quasar.config.js
 が作られるので、→の記述を行う。`boot:['router-auth']`
 
-
+### firebaseへデプロイ
+Firebaseへホスティングする。
+フォルダーはdist/spa を指定する。
+```
+quasar build
+firebase init
+firebase deploy
+```
 
