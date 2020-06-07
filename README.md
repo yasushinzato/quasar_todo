@@ -9,6 +9,9 @@ PCとモバイルでの開発が容易にできるフレームワーク
 `quasar dev`
 起動は2分くらいと遅いが、ソースコードを保存すると即反映されるようになる。
 
+## firebaseホスティング
+https://awesome-todo-7b83c.web.app/#/auth
+
 
 https://awesome-todo-7b83c.web.app/#/auth
 
