@@ -63,14 +63,6 @@ export default {
       }
     };
   },
-  // computed: {
-  //   defaultSet() {
-  //     if (this.tab == "ログイン") {
-  //       (this.email = this.defaultMail), (this.password = this.defaultPass);
-  //     }
-  //     console.log("ログイン確認", this.tab);
-  //   }
-  // },
   methods: {
     // store-authのactionを利用する
     ...mapActions("auth", ["registerUser", "loginUser"]),

@@ -10,7 +10,7 @@ PCとモバイルでの開発が容易にできるフレームワーク
 起動は2分くらいと遅いが、ソースコードを保存すると即反映されるようになる。
 
 
-https://awesome-todo-7b83c.web.app/index.html#/auth
+https://awesome-todo-7b83c.web.app/#/auth
 
 
 - 利用イメージ

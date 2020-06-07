@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       tab: "ログイン",
-      // ログインタブだけ選択時用のデフォルト設定値
+      // ログインタブだけ選択時用のデフォルト値を設定
       defaultMail: "test@test.com",
       defaultPass: "testtest"
     };
